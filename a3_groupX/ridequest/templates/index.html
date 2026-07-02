@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}RideQuest | Find your next cycling challenge{% endblock %}
+{% block description %}Search road cycling, hill climb and social ride events.{% endblock %}
+
+{% block content %}
+<header class="hero">
+  <div class="container hero-content">
+    <div class="row">
+      <div class="col-lg-9 col-xl-8">
+        <p class="eyebrow">Ride beyond ordinary</p>
+        <h1>Find a route worth remembering.</h1>
+        <p class="lead mt-4 mb-4">Discover road, mountain and social cycling events with the route facts you need to ride prepared.</p>
+        <div class="d-flex flex-column flex-sm-row gap-3">
+          <a class="btn btn-rq btn-lg px-4" href="#discover">Find an event</a>
+          {% if current_user.is_authenticated %}
+            <a class="btn btn-outline-rq btn-lg px-4" href="{{ url_for('events.create_event') }}">Create an event</a>
+          {% else %}
+            <a class="btn btn-outline-rq btn-lg px-4" href="{{ url_for('auth.register') }}">Join the community</a>
+          {% endif %}
+        </div>
+        <div class="row g-3 mt-4">
+          <div class="col-4"><div class="hero-stat"><strong>{{ total_events }}</strong><span>Events listed</span></div></div>
+          <div class="col-4"><div class="hero-stat"><strong>{{ open_events }}</strong><span>Open now</span></div></div>
+          <div class="col-4"><div class="hero-stat"><strong>{{ rider_count }}</strong><span>Places booked</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="discover" class="section-pad section-soft" aria-labelledby="discover-title">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow text-dark">Search &amp; discover</p>
+      <h2 id="discover-title" class="display-6">Find the right ride for you.</h2>
+      <p>Search by place or event name, then narrow the results by category, difficulty and live status.</p>
+    </div>
+
+    <form class="search-panel" method="get" action="{{ url_for('main.index') }}">
+      <div class="row g-3 align-items-end">
+        <div class="col-lg-4">
+          <label class="form-label" for="searchQuery">Keyword or location</label>
+          <input class="form-control" id="searchQuery" name="q" type="search" value="{{ query_text }}" placeholder="Try “Glass House” or “Brisbane”">
+        </div>
+        <div class="col-6 col-lg-2">
+          <label class="form-label" for="categoryFilter">Category</label>
+          <select class="form-select" id="categoryFilter" name="category">
+            <option value="">All categories</option>
+            {% for category in categories %}
+              <option value="{{ category.id }}"{% if selected_category == category.id %} selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-6 col-lg-2">
+          <label class="form-label" for="difficultyFilter">Difficulty</label>
+          <select class="form-select" id="difficultyFilter" name="difficulty">
+            <option value="">All levels</option>
+            {% for level in ["Leisure", "Moderate", "Challenging", "Advanced"] %}
+              <option value="{{ level }}"{% if selected_difficulty == level %} selected{% endif %}>{{ level }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-6 col-lg-2">
+          <label class="form-label" for="statusFilter">Status</label>
+          <select class="form-select" id="statusFilter" name="status">
+            <option value="">All statuses</option>
+            {% for event_status in ["Open", "Sold Out", "Inactive", "Cancelled"] %}
+              <option value="{{ event_status }}"{% if selected_status == event_status %} selected{% endif %}>{{ event_status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-6 col-lg-2 d-grid">
+          <button class="btn btn-ink" type="submit">Search events</button>
+        </div>
+      </div>
+      {% if query_text or selected_category or selected_difficulty or selected_status %}
+        <div class="mt-3"><a class="small fw-bold" href="{{ url_for('main.index', _anchor='discover') }}">Clear all filters</a></div>
+      {% endif %}
+    </form>
+  </div>
+</section>
+
+<section class="section-pad" aria-labelledby="events-title">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+      <div class="section-heading mb-0">
+        <p class="eyebrow text-dark">Live database results</p>
+        <h2 id="events-title" class="display-6">Routes ready to ride</h2>
+        <p class="mb-0">{{ events|length }} event{% if events|length != 1 %}s{% endif %} match your search.</p>
+      </div>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-rq" href="{{ url_for('events.create_event') }}">Create event</a>
+      {% endif %}
+    </div>
+
+    {% if events %}
+      <div class="row g-4">
+        {% for event in events %}
+          <div class="col-md-6 col-xl-4">
+            <article class="event-card card">
+              <a class="event-img-wrap" href="{{ url_for('main.event_detail', event_id=event.id) }}" aria-label="View {{ event.name }} details">
+                <img src="{{ url_for('static', filename=event.image_filename) }}" alt="{{ event.name }} cycling event">
+                <span class="status-badge {{ status_class(event.status) }}">{{ event.status }}</span>
+              </a>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge text-bg-light">{{ event.category.name }}</span>
+                  <strong>{% if event.price == 0 %}Free{% else %}${{ "%.2f"|format(event.price) }}{% endif %}</strong>
+                </div>
+                <h3><a class="stretched-link text-decoration-none" href="{{ url_for('main.event_detail', event_id=event.id) }}">{{ event.name }}</a></h3>
+                <p class="event-location mb-3">{{ event.meeting_location }} · {{ event.event_date.strftime("%d %b %Y") }}</p>
+                <div class="event-meta">
+                  <div><span>Distance</span><strong>{{ event.distance_km|float|round(1) }} km</strong></div>
+                  <div><span>Climbing</span><strong>{{ event.elevation_gain_m }} m</strong></div>
+                  <div><span>Places</span><strong>{{ event.remaining_capacity }} left</strong></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-note">
+        <h3 class="h4">No routes match those filters.</h3>
+        <p class="text-secondary">Try a broader keyword or clear one of the selected filters.</p>
+        <a class="btn btn-ink" href="{{ url_for('main.index', _anchor='discover') }}">Reset search</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
+  <title id="title">Riverside Weekend Social Ride</title>
+  <desc id="desc">A relaxed group of cyclists beside a river and city park.</desc>
+  <defs><linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a8e4ea"/><stop offset="1" stop-color="#fbdf9b"/></linearGradient></defs>
+  <rect width="1000" height="625" fill="url(#w)"/>
+  <circle cx="820" cy="105" r="62" fill="#fff5b5"/>
+  <path d="M0 353c177-80 319-50 433 22 135 85 287 87 567-44v294H0Z" fill="#4d927f"/>
+  <path d="M0 466c221-88 393-67 545 6 120 58 267 48 455-27v180H0Z" fill="#235669"/>
+  <path d="M0 519c270 19 507 16 1000-26" fill="none" stroke="#78cbd4" stroke-width="90"/>
+  <path d="M0 596c254-98 505-104 1000-47" fill="none" stroke="#656f78" stroke-width="56"/>
+  <path d="M0 596c254-98 505-104 1000-47" fill="none" stroke="#f5f1e7" stroke-width="5" stroke-dasharray="35 29"/>
+  <g fill="#173246">
+    <rect x="80" y="283" width="52" height="117"/><rect x="144" y="236" width="76" height="166"/><rect x="231" y="306" width="48" height="92"/>
+  </g>
+  <g transform="translate(408 425) scale(.82)" stroke="#07111f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#c6f135" stroke="none"/>
+  </g>
+  <g transform="translate(615 435) scale(.72)" stroke="#07111f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#36c6d3" stroke="none"/>
+  </g>
+  <g transform="translate(245 469) scale(.58)" stroke="#07111f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#ff8a4c" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block description %}RideQuest cycling events.{% endblock %}">
+  <title>{% block title %}RideQuest{% endblock %}</title>
+  {{ bootstrap.load_css() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}" type="image/svg+xml">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        <img class="brand-mark" src="{{ url_for('static', filename='img/logo.svg') }}" alt="">
+        RideQuest
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link{% if request.endpoint == 'main.index' %} active{% endif %}" href="{{ url_for('main.index') }}">Explore</a>
+          </li>
+          {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link{% if request.endpoint in ['events.create_event', 'events.edit_event'] %} active{% endif %}" href="{{ url_for('events.create_event') }}">Create event</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link{% if request.endpoint == 'main.booking_history' %} active{% endif %}" href="{{ url_for('main.booking_history') }}">My bookings</a>
+            </li>
+          {% endif %}
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          {% if current_user.is_authenticated %}
+            <span class="navbar-text me-1">Hi, {{ current_user.first_name }}</span>
+            <form action="{{ url_for('auth.logout') }}" method="post">
+              {{ logout_form.hidden_tag() }}
+              <button class="btn btn-sm btn-outline-rq px-3" type="submit">Sign out</button>
+            </form>
+            <a class="btn btn-sm btn-rq px-3" href="{{ url_for('events.create_event') }}">List a ride</a>
+          {% else %}
+            <a class="btn btn-sm btn-outline-rq px-3" href="{{ url_for('auth.login') }}">Sign in</a>
+            <a class="btn btn-sm btn-rq px-3" href="{{ url_for('auth.register') }}">Join RideQuest</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-stack container" aria-live="polite">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <a class="navbar-brand mb-3" href="{{ url_for('main.index') }}">
+            <img class="brand-mark" src="{{ url_for('static', filename='img/logo.svg') }}" alt="">
+            RideQuest
+          </a>
+          <p class="mb-0">Purpose-built cycling events with the route facts to ride prepared.</p>
+        </div>
+        <div class="col-6 col-lg-3">
+          <h2 class="h6">Explore</h2>
+          <ul class="list-unstyled">
+            <li><a href="{{ url_for('main.index') }}">All events</a></li>
+            <li><a href="{{ url_for('main.index', difficulty='Challenging') }}">Challenges</a></li>
+            <li><a href="{{ url_for('main.index', status='Open') }}">Open events</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-3">
+          <h2 class="h6">Your rides</h2>
+          <ul class="list-unstyled">
+            {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('events.create_event') }}">Create event</a></li>
+              <li><a href="{{ url_for('main.booking_history') }}">Booking history</a></li>
+            {% else %}
+              <li><a href="{{ url_for('auth.register') }}">Create account</a></li>
+              <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <hr class="footer-rule my-4">
+      <p class="small mb-0">&copy; 2026 RideQuest. IFQ557 final web application.</p>
+    </div>
+  </footer>
+
+  {{ bootstrap.load_js() }}
+</body>
+</html>

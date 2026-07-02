@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
+  <title id="title">Forest Gravel Challenge</title>
+  <desc id="desc">A gravel cyclist riding through a dense green forest.</desc>
+  <rect width="1000" height="625" fill="#a4d5c0"/>
+  <path d="M0 400 160 165l125 145 155-244 162 218 150-179 248 280v240H0Z" fill="#27614f"/>
+  <g fill="#173f36">
+    <path d="m75 0 95 306H-20Z"/><path d="m250 35 105 322H132Z"/><path d="m810 0 135 361H679Z"/><path d="m940 74 95 289H833Z"/>
+  </g>
+  <path d="M0 530c235-89 418-104 579-59 173 48 260 53 421 12v142H0Z" fill="#153a34"/>
+  <path d="M0 613c226-125 433-139 614-98 145 33 258 36 386 6" fill="none" stroke="#8b795d" stroke-width="74"/>
+  <path d="M0 613c226-125 433-139 614-98 145 33 258 36 386 6" fill="none" stroke="#dac7a6" stroke-width="6" stroke-dasharray="17 22"/>
+  <g transform="translate(535 396) scale(1.02)" stroke="#07111f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51M34 34h38"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#c6f135" stroke="none"/>
+  </g>
+</svg>

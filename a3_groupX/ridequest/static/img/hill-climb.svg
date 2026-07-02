@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
+  <title id="title">Summit Hill Climb</title>
+  <desc id="desc">A cyclist climbing a steep switchback road through dramatic mountains.</desc>
+  <defs><linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b5dfe3"/><stop offset="1" stop-color="#f5b36b"/></linearGradient></defs>
+  <rect width="1000" height="625" fill="url(#h)"/>
+  <circle cx="160" cy="112" r="60" fill="#fff0a2"/>
+  <path d="M0 375 235 112l164 192 183-258 199 261 219-185v503H0Z" fill="#294052"/>
+  <path d="M0 440 255 210l157 185 190-206 202 211 196-146v371H0Z" fill="#1b303f"/>
+  <path d="M0 570c259-129 466-111 634-25 103 53 224 45 366-8" fill="none" stroke="#6f7982" stroke-width="70"/>
+  <path d="M0 570c259-129 466-111 634-25 103 53 224 45 366-8" fill="none" stroke="#f3eee2" stroke-width="6" stroke-dasharray="36 30"/>
+  <path d="M419 507c57-70 107-112 170-144 61-31 83-66 60-101" fill="none" stroke="#707b83" stroke-width="42"/>
+  <path d="M419 507c57-70 107-112 170-144 61-31 83-66 60-101" fill="none" stroke="#f3eee2" stroke-width="5" stroke-dasharray="24 22"/>
+  <g transform="translate(485 372) rotate(-21) scale(.78)" stroke="#07111f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#ff8a4c" stroke="none"/>
+  </g>
+</svg>

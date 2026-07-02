@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.name }} | RideQuest{% endblock %}
+{% block description %}Route and booking details for {{ event.name }}.{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Explore</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('main.index', category=event.category_id) }}">{{ event.category.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ event.name }}</li>
+      </ol>
+    </nav>
+    <div class="row align-items-end g-4">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="status-badge {{ status_class(event.status) }}">{{ event.status }}</span>
+          <span class="badge rounded-pill text-bg-light">{{ event.category.name }}</span>
+          <span class="badge rounded-pill text-bg-light">{{ event.difficulty }}</span>
+        </div>
+        <h1 class="page-title display-3 mb-3">{{ event.name }}</h1>
+        <p class="lead text-white-50 mb-0">{{ event.description|truncate(180) }}</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <p class="mb-1 text-white-50">Hosted by</p>
+        <p class="h5 mb-0">{{ event.owner.full_name }}</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <figure class="detail-visual">
+    <img src="{{ url_for('static', filename=event.image_filename) }}" alt="{{ event.name }} cycling event">
+  </figure>
+</div>
+
+<section class="section-pad pt-4">
+  <div class="container">
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-lg-3"><div class="info-card"><span>Date</span><strong>{{ event.event_date.strftime("%d %B %Y") }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="info-card"><span>Ride time</span><strong>{{ event.start_time.strftime("%-I:%M %p") }}–{{ event.end_time.strftime("%-I:%M %p") }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="info-card"><span>Start / finish</span><strong>{{ event.route_start }} / {{ event.route_finish }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="info-card"><span>Capacity</span><strong>{{ event.booked_quantity }} / {{ event.capacity }} riders</strong></div></div>
+    </div>
+
+    {% if current_user.is_authenticated and current_user.id == event.owner_id %}
+      <div class="owner-panel d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div>
+          <strong>You created this event.</strong>
+          <p class="small text-secondary mb-0">Only you can update its details or trigger cancellation.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          {% if not event.is_cancelled %}
+            <a class="btn btn-outline-secondary" href="{{ url_for('events.edit_event', event_id=event.id) }}">Update details</a>
+            <form action="{{ url_for('events.cancel_event', event_id=event.id) }}" method="post">
+              {{ cancel_form.hidden_tag() }}
+              <button class="btn btn-danger" type="submit">Cancel event</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-8 content-copy">
+        <section class="mb-5" aria-labelledby="overview-title">
+          <p class="eyebrow text-dark">The experience</p>
+          <h2 id="overview-title">What to expect</h2>
+          {% for paragraph in event.description.split("\n") %}
+            {% if paragraph %}<p>{{ paragraph }}</p>{% endif %}
+          {% endfor %}
+        </section>
+
+        <section class="mb-5" aria-labelledby="route-title">
+          <p class="eyebrow text-dark">Route profile</p>
+          <h2 id="route-title">{{ event.distance_km|float|round(1) }} km · {{ event.elevation_gain_m }} m climbing</h2>
+          {% if event.route_image_filename %}
+            <img class="route-map my-3" src="{{ url_for('static', filename=event.route_image_filename) }}" alt="Route map for {{ event.name }}">
+          {% endif %}
+          <p>{{ event.route_description }}</p>
+          <div class="row g-3 mt-2">
+            <div class="col-sm-4"><div class="info-card"><span>Difficulty</span><strong>{{ event.difficulty }}</strong></div></div>
+            <div class="col-sm-4"><div class="info-card"><span>Terrain</span><strong>{{ event.terrain }}</strong></div></div>
+            <div class="col-sm-4"><div class="info-card"><span>Remaining</span><strong>{{ event.remaining_capacity }} places</strong></div></div>
+          </div>
+        </section>
+
+        <section class="mb-5" aria-labelledby="supply-title">
+          <p class="eyebrow text-dark">Ride support</p>
+          <h2 id="supply-title">Supply points</h2>
+          <ul class="supply-list mt-4">
+            {% for point in event.supply_points %}
+              <li>
+                <strong>{{ point.distance_from_start_km|float|round(1) }} km · {{ point.name }}</strong>
+                <p class="mb-0">{{ point.location_description }} — {{ point.services }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <section class="mb-5" aria-labelledby="safety-title">
+          <p class="eyebrow text-dark">Ride prepared</p>
+          <h2 id="safety-title">Equipment &amp; safety requirements</h2>
+          <div class="info-card mt-3"><p class="mb-0">{{ event.equipment_requirements }}</p></div>
+        </section>
+
+        <section id="comments" aria-labelledby="comments-title">
+          <p class="eyebrow text-dark">Rider questions</p>
+          <h2 id="comments-title">Comments <span class="text-secondary">({{ event.comments|length }})</span></h2>
+          <div class="vstack gap-3 my-4">
+            {% for comment in event.comments %}
+              <article class="comment-card">
+                <div class="d-flex gap-3">
+                  <div class="avatar">{{ comment.author.first_name[0] }}{{ comment.author.surname[0] }}</div>
+                  <div>
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                      <strong>{{ comment.author.full_name }}</strong>
+                      <span class="small text-secondary">{{ comment.created_at.strftime("%d %B %Y · %-I:%M %p") }}</span>
+                    </div>
+                    <p class="mb-0 mt-2">{{ comment.content }}</p>
+                  </div>
+                </div>
+              </article>
+            {% else %}
+              <div class="empty-note"><p class="mb-0">No comments yet. Start the conversation.</p></div>
+            {% endfor %}
+          </div>
+
+          <div class="form-panel">
+            <h3 class="h5">Join the conversation</h3>
+            {% if current_user.is_authenticated %}
+              <form action="{{ url_for('events.post_comment', event_id=event.id) }}" method="post">
+                {{ comment_form.hidden_tag() }}
+                {{ comment_form.content.label(class="form-label") }}
+                {{ comment_form.content(class="form-control", rows="4", placeholder="Ask about the route, equipment or event-day details…") }}
+                <div class="d-flex justify-content-between align-items-center gap-3 mt-3">
+                  <span class="form-text">Maximum 500 characters</span>
+                  {{ comment_form.submit(class="btn btn-ink") }}
+                </div>
+              </form>
+            {% else %}
+              <p class="text-secondary">Sign in to post a comment. Anyone can read the discussion.</p>
+              <a class="btn btn-ink" href="{{ url_for('auth.login', next=request.path) }}">Sign in to comment</a>
+            {% endif %}
+          </div>
+        </section>
+      </div>
+
+      <aside class="col-lg-4" aria-label="Book this event">
+        <div class="booking-card">
+          <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+            <div>
+              <span class="small text-secondary">Entry fee</span>
+              <div class="price">{% if event.price == 0 %}Free{% else %}${{ "%.2f"|format(event.price) }}{% endif %}<small> per rider</small></div>
+            </div>
+            <span class="status-badge {{ status_class(event.status) }}">{{ event.status }}</span>
+          </div>
+          <div class="availability mb-4">{{ event.remaining_capacity }} places remaining</div>
+
+          {% if event.status == "Open" and current_user.is_authenticated %}
+            <form action="{{ url_for('events.book_event', event_id=event.id) }}" method="post">
+              {{ booking_form.hidden_tag() }}
+              <div class="mb-3">
+                {{ booking_form.quantity.label(class="form-label") }}
+                {{ booking_form.quantity(class="form-control", min="1", max=event.remaining_capacity) }}
+              </div>
+              <div class="mb-3">
+                {{ booking_form.participation_group.label(class="form-label") }}
+                {{ booking_form.participation_group(class="form-select") }}
+              </div>
+              <div class="mb-3">
+                {{ booking_form.bicycle_type.label(class="form-label") }}
+                {{ booking_form.bicycle_type(class="form-select") }}
+              </div>
+              <div class="form-check mb-4">
+                {{ booking_form.equipment_confirmed(class="form-check-input") }}
+                {{ booking_form.equipment_confirmed.label(class="form-check-label small") }}
+              </div>
+              {{ booking_form.submit(class="btn btn-rq btn-lg w-100") }}
+            </form>
+          {% elif event.status == "Open" %}
+            <p class="text-secondary">You need an account before booking places.</p>
+            <a class="btn btn-rq btn-lg w-100" href="{{ url_for('auth.login', next=request.path) }}">Sign in to book</a>
+          {% else %}
+            <div class="alert alert-secondary mb-0">Bookings are unavailable while this event is {{ event.status|lower }}.</div>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

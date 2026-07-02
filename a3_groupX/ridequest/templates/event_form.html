@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}{{ heading }} | RideQuest{% endblock %}
+
+{% macro render_errors(field) %}
+  {% if field.errors %}
+    {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container">
+    <p class="eyebrow">{% if event %}Keep it current{% else %}Lead the ride{% endif %}</p>
+    <h1 class="page-title display-3 mb-3">{{ heading }}</h1>
+    <p class="lead text-white-50 mb-0">{{ introduction }}</p>
+  </div>
+</header>
+
+<section class="section-pad section-soft">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <form class="form-panel" method="post" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+
+          {% if form.errors %}
+            <div class="alert alert-danger">Please correct the highlighted fields before saving.</div>
+          {% endif %}
+
+          <section class="form-section" aria-labelledby="basics-title">
+            <h2 id="basics-title">1. Event basics</h2>
+            <p>Name the experience and explain what makes it worth riding.</p>
+            <div class="row g-4">
+              <div class="col-md-8">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control", placeholder="e.g. Glass House Gran Fondo") }}
+                {{ render_errors(form.name) }}
+              </div>
+              <div class="col-md-4">
+                {{ form.category_id.label(class="form-label") }}
+                {{ form.category_id(class="form-select") }}
+                {{ render_errors(form.category_id) }}
+              </div>
+              <div class="col-12">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control", rows="5") }}
+                {{ render_errors(form.description) }}
+              </div>
+              <div class="col-12">
+                {{ form.event_image.label(class="form-label") }}
+                {{ form.event_image(class="form-control", accept=".jpg,.jpeg,.png,.webp,.svg") }}
+                <div class="form-text">{% if event %}Leave blank to keep the existing image.{% else %}Optional; a RideQuest image is used when blank.{% endif %}</div>
+                {{ render_errors(form.event_image) }}
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="schedule-title">
+            <h2 id="schedule-title">2. Schedule &amp; capacity</h2>
+            <p>RideQuest uses these values to manage Open, Inactive and Sold Out status.</p>
+            <div class="row g-4">
+              <div class="col-md-4">{{ form.event_date.label(class="form-label") }}{{ form.event_date(class="form-control") }}{{ render_errors(form.event_date) }}</div>
+              <div class="col-6 col-md-4">{{ form.start_time.label(class="form-label") }}{{ form.start_time(class="form-control") }}{{ render_errors(form.start_time) }}</div>
+              <div class="col-6 col-md-4">{{ form.end_time.label(class="form-label") }}{{ form.end_time(class="form-control") }}{{ render_errors(form.end_time) }}</div>
+              <div class="col-md-4">{{ form.price.label(class="form-label") }}{{ form.price(class="form-control", min="0", step="0.01") }}{{ render_errors(form.price) }}</div>
+              <div class="col-md-4">{{ form.capacity.label(class="form-label") }}{{ form.capacity(class="form-control", min="1", max="2000") }}{{ render_errors(form.capacity) }}</div>
+              <div class="col-md-4">{{ form.meeting_location.label(class="form-label") }}{{ form.meeting_location(class="form-control") }}{{ render_errors(form.meeting_location) }}</div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="route-form-title">
+            <h2 id="route-form-title">3. Route &amp; difficulty</h2>
+            <p>Help riders judge fitness, bicycle and route suitability.</p>
+            <div class="row g-4">
+              <div class="col-md-6">{{ form.route_start.label(class="form-label") }}{{ form.route_start(class="form-control") }}{{ render_errors(form.route_start) }}</div>
+              <div class="col-md-6">{{ form.route_finish.label(class="form-label") }}{{ form.route_finish(class="form-control") }}{{ render_errors(form.route_finish) }}</div>
+              <div class="col-md-3">{{ form.distance_km.label(class="form-label") }}{{ form.distance_km(class="form-control", min="1", step="0.1") }}{{ render_errors(form.distance_km) }}</div>
+              <div class="col-md-3">{{ form.elevation_gain_m.label(class="form-label") }}{{ form.elevation_gain_m(class="form-control", min="0") }}{{ render_errors(form.elevation_gain_m) }}</div>
+              <div class="col-md-3">{{ form.difficulty.label(class="form-label") }}{{ form.difficulty(class="form-select") }}{{ render_errors(form.difficulty) }}</div>
+              <div class="col-md-3">{{ form.terrain.label(class="form-label") }}{{ form.terrain(class="form-select") }}{{ render_errors(form.terrain) }}</div>
+              <div class="col-12">{{ form.route_description.label(class="form-label") }}{{ form.route_description(class="form-control", rows="4") }}{{ render_errors(form.route_description) }}</div>
+              <div class="col-12">{{ form.route_image.label(class="form-label") }}{{ form.route_image(class="form-control", accept=".jpg,.jpeg,.png,.webp,.svg") }}{{ render_errors(form.route_image) }}</div>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="support-form-title">
+            <h2 id="support-form-title">4. Support &amp; equipment</h2>
+            <p>Add at least one complete supply point. Blank additional rows are ignored.</p>
+            <div class="vstack gap-3 mb-4">
+              {% for point in form.supply_points %}
+                <fieldset class="supply-form-row">
+                  <legend class="h6">Supply point {{ loop.index }}</legend>
+                  <div class="row g-3">
+                    <div class="col-md-3">{{ point.form.name.label(class="form-label") }}{{ point.form.name(class="form-control") }}</div>
+                    <div class="col-md-3">{{ point.form.location_description.label(class="form-label") }}{{ point.form.location_description(class="form-control") }}</div>
+                    <div class="col-md-2">{{ point.form.distance_from_start_km.label(class="form-label") }}{{ point.form.distance_from_start_km(class="form-control", min="0", step="0.1") }}</div>
+                    <div class="col-md-4">{{ point.form.services.label(class="form-label") }}{{ point.form.services(class="form-control") }}</div>
+                  </div>
+                </fieldset>
+              {% endfor %}
+              {{ render_errors(form.supply_points) }}
+            </div>
+            {{ form.equipment_requirements.label(class="form-label") }}
+            {{ form.equipment_requirements(class="form-control", rows="5") }}
+            {{ render_errors(form.equipment_requirements) }}
+          </section>
+
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+            <div class="auto-status"><strong>Status is protected.</strong> Only the event owner can trigger cancellation.</div>
+            <div class="d-flex gap-2">
+              <a class="btn btn-outline-secondary" href="{% if event %}{{ url_for('main.event_detail', event_id=event.id) }}{% else %}{{ url_for('main.index') }}{% endif %}">Cancel editing</a>
+              {{ form.submit(class="btn btn-rq px-4", value="Save event") }}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

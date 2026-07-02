@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}My booking history | RideQuest{% endblock %}
+
+{% block content %}
+<header class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Your ride log</p>
+    <h1 class="page-title display-3 mb-3">Booking history</h1>
+    <p class="lead text-white-50 mb-0">Review your actual RideQuest orders, references and current event status.</p>
+  </div>
+</header>
+
+<section class="section-pad section-soft">
+  <div class="container">
+    <div class="row g-3 mb-5">
+      <div class="col-6 col-lg-3"><div class="history-summary"><span>Total bookings</span><strong>{{ bookings|length }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="history-summary"><span>Upcoming</span><strong>{{ bookings|selectattr("event.status", "equalto", "Open")|list|length }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="history-summary"><span>Places booked</span><strong>{{ bookings|sum(attribute="quantity") }}</strong></div></div>
+      <div class="col-6 col-lg-3"><div class="history-summary"><span>Signed in as</span><strong class="h5">{{ current_user.full_name }}</strong></div></div>
+    </div>
+
+    <div class="section-heading">
+      <p class="eyebrow text-dark">Database records</p>
+      <h2 class="display-6">Your registered events</h2>
+    </div>
+
+    {% if bookings %}
+      <div class="vstack gap-4">
+        {% for booking in bookings %}
+          <article class="history-card">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img class="history-img" src="{{ url_for('static', filename=booking.event.image_filename) }}" alt="{{ booking.event.name }}">
+              </div>
+              <div class="col-md-8">
+                <div class="history-card-body">
+                  <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                    <div>
+                      <span class="status-badge {{ status_class(booking.event.status) }} mb-2">{{ booking.event.status }}</span>
+                      <h3 class="h4 fw-bold mb-1">{{ booking.event.name }}</h3>
+                      <p class="text-secondary mb-2">{{ booking.event.event_date.strftime("%d %B %Y") }} · {{ booking.event.meeting_location }}</p>
+                      <p class="order-id mb-0">Booking ID: {{ booking.booking_reference }}</p>
+                    </div>
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('main.event_detail', event_id=booking.event.id) }}">View event</a>
+                  </div>
+                  <div class="order-details mt-4">
+                    <div><span>Booked on</span><strong>{{ booking.booked_at.strftime("%d %b %Y · %-I:%M %p") }}</strong></div>
+                    <div><span>Places</span><strong>{{ booking.quantity }}</strong></div>
+                    <div><span>Ride group</span><strong>{{ booking.participation_group }}</strong></div>
+                    <div><span>Total</span><strong>${{ "%.2f"|format(booking.total_price) }}</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-note">
+        <h2 class="h4">Your ride log is ready for its first route.</h2>
+        <p class="text-secondary">Browse open events and make a booking.</p>
+        <a class="btn btn-ink" href="{{ url_for('main.index', status='Open') }}">Explore open events</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

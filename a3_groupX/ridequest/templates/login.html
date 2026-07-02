@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in | RideQuest{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5">
+        <div class="auth-card">
+          <p class="eyebrow text-dark">Welcome back</p>
+          <h1 class="page-title h2">Sign in to RideQuest</h1>
+          <p class="text-secondary">Book places, comment and manage your own cycling events.</p>
+          <form method="post" class="mt-4">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              {{ form.email.label(class="form-label") }}
+              {{ form.email(class="form-control", autocomplete="email") }}
+              {% for error in form.email.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-3">
+              {{ form.password.label(class="form-label") }}
+              {{ form.password(class="form-control", autocomplete="current-password") }}
+              {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="form-check mb-4">
+              {{ form.remember(class="form-check-input") }}
+              {{ form.remember.label(class="form-check-label") }}
+            </div>
+            {{ form.submit(class="btn btn-rq btn-lg w-100") }}
+          </form>
+          <p class="small text-center mt-4 mb-0">New rider? <a class="fw-bold" href="{{ url_for('auth.register') }}">Create an account</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

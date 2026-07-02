@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
+  <title id="title">Scenic Coast Gran Fondo</title>
+  <desc id="desc">Road cyclists riding above a blue coastline and green hills.</desc>
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#86d9e3"/><stop offset="1" stop-color="#f7d18b"/></linearGradient></defs>
+  <rect width="1000" height="625" fill="url(#s)"/>
+  <circle cx="835" cy="108" r="62" fill="#fff5b5"/>
+  <path d="M0 315c145-62 276-54 385 1 120 61 243 57 360-3 102-53 187-42 255-5v317H0Z" fill="#2e7791"/>
+  <path d="M0 395c158-114 300-99 431-22 131 78 246 92 350 43 86-40 159-38 219-5v214H0Z" fill="#284e4b"/>
+  <path d="M0 520c224-98 406-93 567-31 148 57 267 55 433 6v130H0Z" fill="#142f35"/>
+  <path d="M0 573c257-83 433-84 583-42 146 41 270 43 417 12" fill="none" stroke="#68747c" stroke-width="58"/>
+  <path d="M0 573c257-83 433-84 583-42 146 41 270 43 417 12" fill="none" stroke="#eef2e9" stroke-width="5" stroke-dasharray="35 28"/>
+  <g transform="translate(520 410)" stroke="#0b1728" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51M34 35h36"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#c6f135" stroke="none"/>
+  </g>
+  <g transform="translate(338 438) scale(.72)" stroke="#0b1728" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <circle cx="0" cy="102" r="40" fill="none"/><circle cx="124" cy="102" r="40" fill="none"/>
+    <path d="M0 102 43 51l29 51H0Zm43-51h50l31 51M72 102l21-51"/>
+    <path d="m58 30 19-24 27 13M77 6l20 31 25 16" fill="none"/>
+    <circle cx="76" cy="-1" r="11" fill="#36c6d3" stroke="none"/>
+  </g>
+</svg>

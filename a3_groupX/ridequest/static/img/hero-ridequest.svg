@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Cyclist climbing a mountain road at sunrise</title>
+  <desc id="desc">A stylised landscape with winding road, distant mountain ridges and a road cyclist.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#397f99"/>
+      <stop offset=".55" stop-color="#f4a261"/>
+      <stop offset="1" stop-color="#f8c885"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6d7580"/>
+      <stop offset="1" stop-color="#252f3b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1220" cy="210" r="92" fill="#fff3b0" opacity=".9"/>
+  <path d="M0 520 260 250l220 195 250-320 260 340 240-245 370 295v385H0Z" fill="#25475b"/>
+  <path d="m0 590 260-225 220 168 250-250 255 268 250-190 365 230v309H0Z" fill="#173246"/>
+  <path d="M0 700c260-110 525-94 805-32 342 76 542 6 795-110v342H0Z" fill="#12293a"/>
+  <path d="M1600 596c-382 146-503 165-699 155-245-13-328 20-471 149h705c108-111 236-169 465-220Z" fill="url(#road)"/>
+  <path d="M1514 647c-261 95-381 130-545 135" fill="none" stroke="#c6f135" stroke-width="10" stroke-dasharray="50 36" opacity=".9"/>
+  <g transform="translate(1165 590) scale(1.45)" stroke="#0b1728" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="100" r="39" fill="none"/>
+    <circle cx="116" cy="100" r="39" fill="none"/>
+    <path d="M0 100 42 52l25 48H0Zm42-48h46l28 48M67 100l21-48M35 34h30"/>
+    <path d="m56 28 19-21 24 13M75 7l18 29 24 15" fill="none"/>
+    <circle cx="74" cy="0" r="10" fill="#c6f135" stroke="none"/>
+  </g>
+  <g fill="#c6f135">
+    <circle cx="148" cy="715" r="7"/><circle cx="192" cy="693" r="4"/><circle cx="229" cy="722" r="5"/>
+  </g>
+</svg>

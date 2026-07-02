@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">RideQuest route logo</title>
+  <rect width="64" height="64" rx="18" fill="#c6f135"/>
+  <path d="M18 43c5-1 8-5 9-12 1-9 7-14 19-12" fill="none" stroke="#0b1728" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="18" cy="43" r="5" fill="#0b1728"/>
+  <circle cx="47" cy="19" r="5" fill="#0b1728"/>
+  <path d="M33 42h11M39 36l6 6-6 6" fill="none" stroke="#0b1728" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
